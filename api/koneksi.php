@@ -1,10 +1,9 @@
 <?php
-$host = ''; 
-$port = 3306; 
-$user = '';
+$host = 'gateway01.ap-southeast-1.prod.alicloud.tidbcloud.com'; 
+$port = 4000; 
+$user = '2WxCR6w5mdhSdWD.root';
 $pass = '';
 $db   = 'db_wisata';
-
 $koneksi = mysqli_init();
 mysqli_ssl_set($koneksi, NULL, NULL, NULL, NULL, NULL);
 
