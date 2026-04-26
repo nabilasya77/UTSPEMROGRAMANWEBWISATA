@@ -3,7 +3,7 @@ session_start();
 require 'koneksi.php';
 
 if (isset($_POST['login'])) {
-    // Mengamankan input email dari SQL Injection
+    
     $email = mysqli_real_escape_string($koneksi, $_POST['email']);
     $pass  = $_POST['password'];
 
@@ -16,25 +16,25 @@ if (isset($_POST['login'])) {
         // Cek password
         if (password_verify($pass, $row['password'])) {
             
-            // Jika benar, set Session
+          
             $_SESSION['login'] = true;
             $_SESSION['nama']  = $row['nama'];
             $_SESSION['email'] = $row['email']; 
             $_SESSION['role']  = $row['role']; 
 
-            // Redirect berdasarkan role
+           
             if ($_SESSION['role'] == 'admin') {
-                // Admin diarahkan ke dashboard admin
-                header("Location: admin.dashboard.php"); 
+               
+                header("Location: ../admin.dashboard.php"); 
             } else {
                 // User sekarang diarahkan langsung ke home.php
-                header("Location: home.php"); 
-            }
-            exit;
+            header("Location: ../home.php"); 
+             } 
+          exit();
         }
     }
     
-    // Jika email tidak ada ATAU password salah, buat variabel error menjadi true
+    
     $error = true;
 }
 ?>
