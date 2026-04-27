@@ -1,11 +1,6 @@
 <?php
-session_start();
-
-var_dump($_SESSION);
-exit();
-
-require 'koneksi.php';
-?>
+session_start(); 
+require 'koneksi.php'; 
 
 // Ambil data destinasi dari DATABASE
 $query_wisata = mysqli_query($koneksi, "SELECT * FROM destinasi ORDER BY id DESC");

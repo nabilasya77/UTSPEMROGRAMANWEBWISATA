@@ -1,34 +1,39 @@
 <?php
+session_start();
 require 'koneksi.php';
 
-header('Content-Type: application/json');
+if (isset($_POST['login'])) {
+    
+    $email = mysqli_real_escape_string($koneksi, $_POST['email']);
+    $pass  = $_POST['password'];
 
-$email = $_POST['email'] ?? '';
-$pass  = $_POST['password'] ?? '';
+    $result = mysqli_query($koneksi, "SELECT * FROM users WHERE email = '$email'");
 
-$result = mysqli_query($koneksi, "SELECT * FROM users WHERE email = '$email'");
+    // Cek apakah email ditemukan (jumlah baris = 1)
+    if (mysqli_num_rows($result) === 1) {
+        $row = mysqli_fetch_assoc($result);
+        
+        // Cek password
+       if (password_verify($pass, $row['password'])) {
+    
+    $_SESSION['login'] = true;
+    $_SESSION['nama']  = $row['nama'];
+    $_SESSION['email'] = $row['email']; 
+    $_SESSION['role']  = $row['role']; 
 
-if (mysqli_num_rows($result) === 1) {
-    $row = mysqli_fetch_assoc($result);
-
-    if (password_verify($pass, $row['password'])) {
-
-        echo json_encode([
-            "status" => "success",
-            "user" => [
-                "nama" => $row['nama'],
-                "email" => $row['email'],
-                "role" => $row['role']
-            ]
-        ]);
-        exit;
+    // 🔥 TARUH DI SINI
+    if ($_SESSION['role'] == 'admin') {
+        header("Location: admin.dashboard.php"); 
+    } else {
+        header("Location: home.php"); 
     }
+    exit();
 }
-
-echo json_encode([
-    "status" => "error",
-    "message" => "Email atau password salah"
-]);
+    }
+    
+    
+    $error = true;
+}
 ?>
 <!DOCTYPE html>
 <html lang="id">
