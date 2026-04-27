@@ -29,20 +29,22 @@ $nama  = $_COOKIE['nama'] ?? null;
                     <li class="nav-item"><a class="nav-link active" href="tentang.php">Tentang</a></li>
                     <li class="nav-item"><a class="nav-link" href="kontak.php">Kontak</a></li>
                     
-                    <?php if (isset($_SESSION['login'])): ?>
-                        <li class="nav-item dropdown ms-lg-3">
-                            <a class="btn btn-primary dropdown-toggle rounded-pill px-4" href="#" role="button" data-bs-toggle="dropdown">
-                                <i class="fa-solid fa-circle-user me-2"></i>Halo, <?= htmlspecialchars($_SESSION['nama'] ?? 'Pengguna'); ?>
-                            </a>
-                            <ul class="dropdown-menu dropdown-menu-end shadow border-0 mt-2">
-                                <li><a class="dropdown-item" href="profil.php"><i class="fa-solid fa-user me-2"></i>Profil Saya</a></li>
-                                <li><hr class="dropdown-divider"></li>
-                                <li><a class="dropdown-item text-danger fw-bold" href="logout.php"><i class="fa-solid fa-right-from-bracket me-2"></i>Logout</a></li>
-                            </ul>
-                        </li>
-                    <?php else: ?>
-                        <li class="nav-item"><a class="btn btn-primary rounded-pill ms-lg-3 px-4" href="login.php">Login</a></li>
-                    <?php endif; ?>
+                   <?php if ($login): ?>
+    <li class="nav-item dropdown ms-lg-3">
+        <a class="btn btn-primary dropdown-toggle rounded-pill px-4" href="#" data-bs-toggle="dropdown">
+            <i class="fa-solid fa-circle-user me-2"></i>
+            Halo, <?= htmlspecialchars($nama ?? 'Pengguna'); ?>
+        </a>
+        <ul class="dropdown-menu dropdown-menu-end">
+            <li><a class="dropdown-item" href="profil.php">Profil Saya</a></li>
+            <li><a class="dropdown-item text-danger" href="logout.php">Logout</a></li>
+        </ul>
+    </li>
+<?php else: ?>
+    <li class="nav-item">
+        <a class="btn btn-primary rounded-pill ms-lg-3 px-4" href="login.php">Login</a>
+    </li>
+<?php endif; ?>
                     
                 </ul>
             </div>
