@@ -16,10 +16,10 @@ if (isset($_POST['login'])) {
         // Cek password
        if (password_verify($pass, $row['password'])) {
     
-    $_SESSION['login'] = true;
-    $_SESSION['nama']  = $row['nama'];
-    $_SESSION['email'] = $row['email']; 
-    $_SESSION['role']  = $row['role']; 
+      setcookie("login", "true", time() + 3600, "/");
+      setcookie("nama", $row['nama'], time() + 3600, "/");
+      setcookie("email", $row['email'], time() + 3600, "/");
+      setcookie("role", $row['role'], time() + 3600, "/");   
 
     // 🔥 TARUH DI SINI
     if ($_SESSION['role'] == 'admin') {
