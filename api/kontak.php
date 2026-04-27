@@ -1,13 +1,12 @@
 <?php
-// TANPA session
+
 
 $notifikasi = "";
 
-// Ambil data dari cookie (kalau sudah login)
 $nama_cookie  = $_COOKIE['nama'] ?? '';
 $email_cookie = $_COOKIE['email'] ?? '';
 
-// Cek tombol kirim
+
 if (isset($_POST['kirim_pesan'])) {
     $nama  = htmlspecialchars($_POST['nama']);
     $email = htmlspecialchars($_POST['email']);

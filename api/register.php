@@ -1,46 +1,51 @@
 <?php
 require 'koneksi.php';
 
-$login = $_COOKIE['login'] ?? null;
+
+$nama_cookie  = $_COOKIE['nama'] ?? '';
+$email_cookie = $_COOKIE['email'] ?? '';
+
+$login = isset($_COOKIE['login']);
+$nama  = $_COOKIE['nama'] ?? '';
+
 
 if ($login) {
     header("Location: home.php");
     exit;
 }
+
+// proses register
 if (isset($_POST['register'])) {
-   
+
     $nama = mysqli_real_escape_string($koneksi, $_POST['nama']);
     $email = mysqli_real_escape_string($koneksi, $_POST['email']);
     $password = $_POST['password'];
     $konfirmasi_password = $_POST['konfirmasi_password'];
 
-    
     if ($password !== $konfirmasi_password) {
         $error = "Konfirmasi password tidak sesuai!";
     } else {
-        // 2. Cek apakah email sudah terdaftar sebelumnya
+
         $cek_email = mysqli_query($koneksi, "SELECT email FROM users WHERE email = '$email'");
+        
         if (mysqli_num_rows($cek_email) > 0) {
-            $error = "Email sudah terdaftar! Silakan gunakan email lain atau login.";
+            $error = "Email sudah terdaftar!";
         } else {
-            // 3. Enkripsi password (Wajib agar bisa login dengan password_verify di login.php)
+
             $password_hash = password_hash($password, PASSWORD_DEFAULT);
-            
-            // 4. Set role default sebagai 'user'
             $role = 'user';
 
-            // 5. Masukkan data ke database
-            $query_insert = "INSERT INTO users (nama, email, password, role) VALUES ('$nama', '$email', '$password_hash', '$role')";
-            
+            $query_insert = "INSERT INTO users (nama, email, password, role) 
+                             VALUES ('$nama', '$email', '$password_hash', '$role')";
+
             if (mysqli_query($koneksi, $query_insert)) {
-                // Jika berhasil, munculkan alert dan arahkan ke login.php
                 echo "<script>
                         alert('Registrasi berhasil! Silakan login.');
                         window.location.href = 'login.php';
                       </script>";
                 exit;
             } else {
-                $error = "Terjadi kesalahan! Gagal mendaftarkan akun.";
+                $error = "Gagal daftar!";
             }
         }
     }

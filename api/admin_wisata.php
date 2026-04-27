@@ -1,13 +1,14 @@
 <?php
-session_start();
 require 'koneksi.php';
 
-// Cek login admin
-if (!isset($_SESSION['login']) || $_SESSION['role'] !== 'admin') {
-    header("Location: login.php"); exit;
+$login = $_COOKIE['login'] ?? null;
+$role  = $_COOKIE['role'] ?? null;
+
+if (!$login || $role !== 'admin') {
+    header("Location: login.php");
+    exit;
 }
 
-// Ambil data destinasi untuk ditampilkan di tabel
 $destinasi = mysqli_query($koneksi, "SELECT * FROM destinasi ORDER BY id DESC");
 ?>
 <!DOCTYPE html>

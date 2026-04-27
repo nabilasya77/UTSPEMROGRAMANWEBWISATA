@@ -1,7 +1,6 @@
 <?php
 require 'koneksi.php';
 
-// Cek login & role (lebih aman: cek semua dulu)
 if (
     !isset($_COOKIE['login']) ||
     !isset($_COOKIE['role']) ||
@@ -11,15 +10,15 @@ if (
     exit;
 }
 
-// Ambil nama dari cookie (fallback)
+
 $nama = $_COOKIE['nama'] ?? 'Admin';
 
-// Ambil data (cukup sekali)
+
 $jml_user = mysqli_fetch_assoc(mysqli_query($koneksi, "SELECT COUNT(id) as total FROM users WHERE role='user'"))['total'];
 $jml_admin = mysqli_fetch_assoc(mysqli_query($koneksi, "SELECT COUNT(id) as total FROM users WHERE role='admin'"))['total'];
 $jml_wisata = mysqli_fetch_assoc(mysqli_query($koneksi, "SELECT COUNT(id) as total FROM destinasi"))['total'];
 
-// API BPS (pakai timeout biar tidak lemot)
+
 $url_bps = "https://webapi.bps.go.id/v1/api/list/model/data/lang/ind/domain/3312/var/574/th/126/key/d3e573a5bfa1b72f6faa5adc3dc920cb";
 
 $context = stream_context_create([

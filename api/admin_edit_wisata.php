@@ -1,9 +1,12 @@
 <?php
-session_start();
 require 'koneksi.php';
 
-if (!isset($_SESSION['login']) || $_SESSION['role'] !== 'admin') { 
-    header("Location: login.php"); exit; 
+$login = $_COOKIE['login'] ?? null;
+$role  = $_COOKIE['role'] ?? null;
+
+if (!$login || $role !== 'admin') {
+    header("Location: login.php");
+    exit;
 }
 
 $id = $_GET['id'];

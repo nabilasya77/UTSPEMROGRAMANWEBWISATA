@@ -1,7 +1,7 @@
 <?php
 require 'koneksi.php';
 
-// Ambil data user dari COOKIE
+// Ambil data user 
 $login = $_COOKIE['login'] ?? null;
 $nama  = $_COOKIE['nama'] ?? null;
 $role  = $_COOKIE['role'] ?? null;

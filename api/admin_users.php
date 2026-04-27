@@ -1,11 +1,14 @@
 <?php
-session_start();
 require 'koneksi.php';
 
-if (!isset($_SESSION['login']) || $_SESSION['role'] !== 'admin') {
-    header("Location: login.php"); exit;
-}
+$login = $_COOKIE['login'] ?? null;
+$role  = $_COOKIE['role'] ?? null;
+$email_login = $_COOKIE['email'] ?? null;
 
+if (!$login || $role !== 'admin') {
+    header("Location: login.php");
+    exit;
+}
 // Logika Ubah Role
 if (isset($_GET['ubah_role_id']) && isset($_GET['role_baru'])) {
     $id_ubah = $_GET['ubah_role_id'];
@@ -66,12 +69,12 @@ $users = mysqli_query($koneksi, "SELECT * FROM users ORDER BY role ASC, nama ASC
                             <?php if ($row['role'] == 'user'): ?>
                                 <a href="?ubah_role_id=<?= $row['id']; ?>&role_baru=admin" class="btn btn-warning btn-sm" onclick="return confirm('Jadikan Admin?')">Jadikan Admin</a>
                             <?php else: ?>
-                                <?php if ($row['email'] !== $_SESSION['email']): ?>
+                               <?php if ($row['email'] !== $email_login): ?>
                                     <a href="?ubah_role_id=<?= $row['id']; ?>&role_baru=user" class="btn btn-secondary btn-sm" onclick="return confirm('Turunkan jadi User?')">Jadikan User</a>
                                 <?php endif; ?>
                             <?php endif; ?>
                             
-                            <?php if ($row['email'] !== $_SESSION['email']): ?>
+                           <?php if ($row['email'] !== $email_login): ?>
                                 <a href="?hapus_id=<?= $row['id']; ?>" class="btn btn-danger btn-sm" onclick="return confirm('Yakin hapus akun ini?')">Hapus</a>
                             <?php endif; ?>
                         </td>
