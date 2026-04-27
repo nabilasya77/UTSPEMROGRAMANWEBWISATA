@@ -1,15 +1,18 @@
 <?php
-session_start(); 
-require 'koneksi.php'; 
+require 'koneksi.php';
 
-// Ambil data destinasi dari DATABASE
+// Ambil data user dari COOKIE
+$login = $_COOKIE['login'] ?? null;
+$nama  = $_COOKIE['nama'] ?? null;
+$role  = $_COOKIE['role'] ?? null;
+
+// Ambil data destinasi
 $query_wisata = mysqli_query($koneksi, "SELECT * FROM destinasi ORDER BY id DESC");
 $destinasi = [];
 while ($row = mysqli_fetch_assoc($query_wisata)) {
     $row['fasilitas_array'] = explode(',', $row['fasilitas']); 
     $destinasi[] = $row;
 }
-
 // Logika Simpan Buku Tamu
 $notif = "";
 if (isset($_POST['kirim_pesan'])) {
@@ -97,28 +100,30 @@ if (isset($_POST['kirim_pesan'])) {
                     <li class="nav-item"><a class="nav-link" href="tentang.php">Tentang</a></li>
                     <li class="nav-item"><a class="nav-link" href="kontak.php">Kontak</a></li>
                     
-                    <?php if (isset($_SESSION['login'])): ?>
-                        <li class="nav-item dropdown ms-lg-3">
-                            <a class="btn btn-primary dropdown-toggle btn-rounded px-4" href="#" role="button" data-bs-toggle="dropdown">
-                                <i class="fa-solid fa-circle-user me-2"></i><?= htmlspecialchars($_SESSION['nama']); ?>
-                            </a>
-                            <ul class="dropdown-menu dropdown-menu-end shadow border-0 mt-2">
-                                <li><a class="dropdown-item" href="profil.php"><i class="fa-solid fa-user me-2"></i>Profil Saya</a></li>
-                                
-                                <?php if (isset($_SESSION['role']) && $_SESSION['role'] == 'admin'): ?>
-                                    <li><hr class="dropdown-divider"></li>
-                                    <li><h6 class="dropdown-header">Menu Pengelola</h6></li>
-                                    <li><a class="dropdown-item" href="admin_users.php"><i class="fa-solid fa-users-gear me-2"></i>Kelola Akun</a></li>
-                                    <li><a class="dropdown-item" href="admin_wisata.php"><i class="fa-solid fa-pen-to-square me-2"></i>Kelola Wisata</a></li>
-                                <?php endif; ?>
+                   <?php if ($login): ?>
+    <li class="nav-item dropdown ms-lg-3">
+        <a class="btn btn-primary dropdown-toggle btn-rounded px-4" href="#" role="button" data-bs-toggle="dropdown">
+            <i class="fa-solid fa-circle-user me-2"></i><?= htmlspecialchars($nama); ?>
+        </a>
+        <ul class="dropdown-menu dropdown-menu-end shadow border-0 mt-2">
+            <li><a class="dropdown-item" href="profil.php">Profil Saya</a></li>
 
-                                <li><hr class="dropdown-divider"></li>
-                                <li><a class="dropdown-item text-danger fw-bold" href="logout.php"><i class="fa-solid fa-right-from-bracket me-2"></i>Logout</a></li>
-                            </ul>
-                        </li>
-                    <?php else: ?>
-                        <li class="nav-item"><a class="btn btn-primary btn-rounded ms-lg-3 px-4" href="login.php">Login</a></li>
-                    <?php endif; ?>
+            <?php if ($role == 'admin'): ?>
+                <li><hr class="dropdown-divider"></li>
+                <li><h6 class="dropdown-header">Admin</h6></li>
+                <li><a class="dropdown-item" href="admin_users.php">Kelola Akun</a></li>
+                <li><a class="dropdown-item" href="admin_wisata.php">Kelola Wisata</a></li>
+            <?php endif; ?>
+
+            <li><hr class="dropdown-divider"></li>
+            <li><a class="dropdown-item text-danger" href="logout.php">Logout</a></li>
+        </ul>
+    </li>
+<?php else: ?>
+    <li class="nav-item">
+        <a class="btn btn-primary btn-rounded ms-lg-3 px-4" href="login.php">Login</a>
+    </li>
+<?php endif; ?>
                 </ul>
             </div>
         </div>
@@ -217,9 +222,9 @@ if (isset($_POST['kirim_pesan'])) {
                         <form method="POST">
                             <div class="mb-3">
                                 <label class="form-label text-muted fw-bold">Nama Lengkap</label>
-                                <input type="text" name="nama" class="form-control" placeholder="Masukkan nama Anda..." required 
-                                       value="<?= isset($_SESSION['nama']) ? htmlspecialchars($_SESSION['nama']) : ''; ?>"
-                                       <?= isset($_SESSION['nama']) ? 'readonly' : ''; ?>>
+                               <input type="text" name="nama" class="form-control"
+    value="<?= $nama ? htmlspecialchars($nama) : ''; ?>"
+    <?= $nama ? 'readonly' : ''; ?>>
                             </div>
                             <div class="mb-3">
                                 <label class="form-label text-muted fw-bold">Pesan / Kesan</label>
