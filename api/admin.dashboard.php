@@ -1,16 +1,17 @@
 <?php
-// File: admin.dashboard.php
-session_start();
 require 'koneksi.php';
 
-
-echo $_SESSION['role'];
-exit();
-
-if (!isset($_SESSION['login']) || $_SESSION['role'] !== 'admin') {
+// Cek login & role
+if (!isset($_COOKIE['login']) || $_COOKIE['role'] !== 'admin') {
     echo "<script>alert('Akses Ditolak!'); window.location='login.php';</script>";
     exit;
 }
+
+// Ambil data
+$jml_user = mysqli_fetch_assoc(mysqli_query($koneksi, "SELECT COUNT(id) as total FROM users WHERE role = 'user'"))['total'];
+$jml_admin = mysqli_fetch_assoc(mysqli_query($koneksi, "SELECT COUNT(id) as total FROM users WHERE role = 'admin'"))['total'];
+$jml_wisata = mysqli_fetch_assoc(mysqli_query($koneksi, "SELECT COUNT(id) as total FROM destinasi"))['total'];
+?>
 
 // Hitung data untuk statistik
 $jml_user = mysqli_fetch_assoc(mysqli_query($koneksi, "SELECT COUNT(id) as total FROM users WHERE role = 'user'"))['total'];

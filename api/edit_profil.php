@@ -1,16 +1,19 @@
 <?php
-session_start();
 require 'koneksi.php';
 
-if (!isset($_SESSION['login'])) {
+// Cek login pakai cookie
+if (!isset($_COOKIE['login'])) {
     header("Location: login.php");
     exit;
 }
 
-$email_user = $_SESSION['email'];
+$email_user = $_COOKIE['email'];
+
+// Ambil data user
 $query = mysqli_query($koneksi, "SELECT * FROM users WHERE email = '$email_user'");
 $data_user = mysqli_fetch_assoc($query);
 
+// Update profil
 if (isset($_POST['update'])) {
     $nama = mysqli_real_escape_string($koneksi, $_POST['nama']);
     $password_baru = $_POST['password'];
@@ -23,7 +26,10 @@ if (isset($_POST['update'])) {
     }
 
     if (mysqli_query($koneksi, $update_query)) {
-        $_SESSION['nama'] = $nama; 
+
+        // 🔥 Update cookie juga biar navbar ikut berubah
+        setcookie("nama", $nama, time() + 3600, "/");
+
         echo "<script>alert('Profil berhasil diperbarui!'); window.location='profil.php';</script>";
     } else {
         echo "<script>alert('Gagal update profil');</script>";

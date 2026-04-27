@@ -1,22 +1,24 @@
 <?php
-session_start(); // Memulai session untuk mengecek status login
+// TANPA session
 
-$notifikasi = ""; // Variabel untuk menyimpan pesan notifikasi
+$notifikasi = "";
 
-// Cek apakah tombol "Kirim Pesan" ditekan
+// Ambil data dari cookie (kalau sudah login)
+$nama_cookie  = $_COOKIE['nama'] ?? '';
+$email_cookie = $_COOKIE['email'] ?? '';
+
+// Cek tombol kirim
 if (isset($_POST['kirim_pesan'])) {
     $nama  = htmlspecialchars($_POST['nama']);
     $email = htmlspecialchars($_POST['email']);
     $pesan = htmlspecialchars($_POST['pesan']);
 
-    // Di sini kamu bisa menambahkan kode query INSERT ke database (tabel pesan)
-    // mysqli_query($koneksi, "INSERT INTO pesan (nama, email, isi_pesan) VALUES ('$nama', '$email', '$pesan')");
-
-    // Membuat alert Bootstrap untuk ditampilkan di atas
+   
     $notifikasi = "
     <div class='alert alert-success alert-dismissible fade show shadow-sm mb-4' role='alert'>
-        <i class='fa-solid fa-circle-check me-2'></i><strong>Berhasil!</strong> Terima kasih <strong>$nama</strong>, pesan Anda telah kami terima.
-        <button type='button' class='btn-close' data-bs-dismiss='alert' aria-label='Close'></button>
+        <i class='fa-solid fa-circle-check me-2'></i>
+        <strong>Berhasil!</strong> Terima kasih <strong>$nama</strong>, pesan Anda telah kami terima.
+        <button type='button' class='btn-close' data-bs-dismiss='alert'></button>
     </div>";
 }
 ?>
@@ -107,10 +109,14 @@ if (isset($_POST['kirim_pesan'])) {
                 <form method="POST" action="">
                     <div class="mb-3">
                         <label class="form-label text-muted">Nama Lengkap</label>
-                        <input type="text" name="nama" class="form-control" placeholder="Masukkan nama Anda" required 
-                               value="<?= isset($_SESSION['nama']) ? htmlspecialchars($_SESSION['nama']) : ''; ?>" 
-                               <?= isset($_SESSION['nama']) ? 'readonly' : ''; ?>>
-                    </div>
+                        <input type="text" name="nama" class="form-control"
+       value="<?= htmlspecialchars($nama_cookie); ?>"
+       <?= $nama_cookie ? 'readonly' : ''; ?>>
+
+<input type="email" name="email" class="form-control"
+       value="<?= htmlspecialchars($email_cookie); ?>"
+       <?= $email_cookie ? 'readonly' : ''; ?>>
+       
                     <div class="mb-3">
                         <label class="form-label text-muted">Email</label>
                         <input type="email" name="email" class="form-control" placeholder="nama@email.com" required>

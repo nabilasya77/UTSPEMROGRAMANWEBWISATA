@@ -1,6 +1,13 @@
 <?php
-session_start();
 require 'koneksi.php';
+
+$login = $_COOKIE['login'] ?? null;
+$role  = $_COOKIE['role'] ?? null;
+
+if (!$login || $role !== 'admin') {
+    header("Location: login.php");
+    exit();
+}
 
 if (isset($_POST['update'])) {
     $id        = $_POST['id'];
@@ -26,4 +33,3 @@ if (isset($_POST['update'])) {
         echo "Error: " . mysqli_error($koneksi);
     }
 }
-?>

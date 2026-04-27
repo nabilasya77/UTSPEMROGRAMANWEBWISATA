@@ -1,17 +1,18 @@
 <?php
-session_start();
 require 'koneksi.php'; 
 
-if (!isset($_SESSION['login'])) {
+// 🔥 CEK COOKIE
+if (!isset($_COOKIE['login'])) {
     header("Location: login.php");
     exit;
 }
 
-$email_user = $_SESSION['email'];
+$email_user = $_COOKIE['email'];
+
+// ambil data user dari DB
 $query = mysqli_query($koneksi, "SELECT * FROM users WHERE email = '$email_user'");
 $data_user = mysqli_fetch_assoc($query);
 ?>
-
 <!DOCTYPE html>
 <html lang="id">
 <head>
