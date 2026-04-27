@@ -3,7 +3,7 @@
 session_start();
 require 'koneksi.php';
 
-// 🔥 TARUH DI SINI
+
 echo $_SESSION['role'];
 exit();
 
