@@ -1,5 +1,4 @@
 <?php
-session_start();
 require 'koneksi.php';
 
 if (isset($_POST['login'])) {
@@ -9,28 +8,26 @@ if (isset($_POST['login'])) {
 
     $result = mysqli_query($koneksi, "SELECT * FROM users WHERE email = '$email'");
 
-    // Cek apakah email ditemukan (jumlah baris = 1)
     if (mysqli_num_rows($result) === 1) {
         $row = mysqli_fetch_assoc($result);
         
-        // Cek password
-       if (password_verify($pass, $row['password'])) {
+        if (password_verify($pass, $row['password'])) {
     
-      setcookie("login", "true", time() + 3600, "/");
-      setcookie("nama", $row['nama'], time() + 3600, "/");
-      setcookie("email", $row['email'], time() + 3600, "/");
-      setcookie("role", $row['role'], time() + 3600, "/");   
+            // ✅ SIMPAN KE COOKIE
+            setcookie("login", "true", time() + 3600, "/");
+            setcookie("nama", $row['nama'], time() + 3600, "/");
+            setcookie("email", $row['email'], time() + 3600, "/");
+            setcookie("role", $row['role'], time() + 3600, "/");   
 
-    // 🔥 TARUH DI SINI
-    if ($_SESSION['role'] == 'admin') {
-        header("Location: admin.dashboard.php"); 
-    } else {
-        header("Location: home.php"); 
+            // ✅ PAKAI DATA LANGSUNG (BUKAN SESSION)
+            if ($row['role'] == 'admin') {
+                header("Location: admin.dashboard.php"); 
+            } else {
+                header("Location: home.php"); 
+            }
+            exit();
+        }
     }
-    exit();
-}
-    }
-    
     
     $error = true;
 }
