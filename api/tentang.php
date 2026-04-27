@@ -1,4 +1,7 @@
-<?php session_start(); ?>
+<?php
+$login = $_COOKIE['login'] ?? null;
+$nama  = $_COOKIE['nama'] ?? null;
+?>
 <!DOCTYPE html>
 <html lang="id">
 <head>

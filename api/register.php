@@ -1,12 +1,12 @@
 <?php
-session_start();
 require 'koneksi.php';
 
-if (isset($_SESSION['login'])) {
-    header("Location: api/index.html");
+$login = $_COOKIE['login'] ?? null;
+
+if ($login) {
+    header("Location: home.php");
     exit;
 }
-
 if (isset($_POST['register'])) {
    
     $nama = mysqli_real_escape_string($koneksi, $_POST['nama']);

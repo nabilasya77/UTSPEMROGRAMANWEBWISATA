@@ -1,6 +1,13 @@
 <?php
-session_start();
 require 'koneksi.php';
+
+$login = $_COOKIE['login'] ?? null;
+$role  = $_COOKIE['role'] ?? null;
+
+if (!$login || $role !== 'admin') {
+    header("Location: login.php");
+    exit();
+}
 
 if (isset($_GET['id'])) {
     $id = $_GET['id'];
@@ -11,7 +18,4 @@ if (isset($_GET['id'])) {
     } else {
         echo "Error: " . mysqli_error($koneksi);
     }
-} else {
-    header("Location: admin_wisata.php");
 }
-?>

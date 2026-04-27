@@ -1,7 +1,13 @@
 <?php
-session_start();
 require 'koneksi.php';
 
+$login = $_COOKIE['login'] ?? null;
+$role  = $_COOKIE['role'] ?? null;
+
+if (!$login || $role !== 'admin') {
+    header("Location: login.php");
+    exit();
+}
 if (isset($_POST['tambah'])) {
     $nama      = mysqli_real_escape_string($koneksi, $_POST['nama']);
     $deskripsi = mysqli_real_escape_string($koneksi, $_POST['deskripsi']);
