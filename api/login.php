@@ -14,24 +14,21 @@ if (isset($_POST['login'])) {
         $row = mysqli_fetch_assoc($result);
         
         // Cek password
-        if (password_verify($pass, $row['password'])) {
-            
-          
-            $_SESSION['login'] = true;
-            $_SESSION['nama']  = $row['nama'];
-            $_SESSION['email'] = $row['email']; 
-            $_SESSION['role']  = $row['role']; 
+       if (password_verify($pass, $row['password'])) {
+    
+    $_SESSION['login'] = true;
+    $_SESSION['nama']  = $row['nama'];
+    $_SESSION['email'] = $row['email']; 
+    $_SESSION['role']  = $row['role']; 
 
-           
-            if ($_SESSION['role'] == 'admin') {
-               
-                header("Location: admin.dashboard.php"); 
-            } else {
-                // User sekarang diarahkan langsung ke home.php
-            header("Location: home.php"); 
-             } 
-          exit();
-        }
+    // 🔥 TARUH DI SINI
+    if ($_SESSION['role'] == 'admin') {
+        header("Location: admin.dashboard.php"); 
+    } else {
+        header("Location: home.php"); 
+    }
+    exit();
+}
     }
     
     
