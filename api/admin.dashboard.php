@@ -3,6 +3,10 @@
 session_start();
 require 'koneksi.php';
 
+// 🔥 TARUH DI SINI
+echo $_SESSION['role'];
+exit();
+
 if (!isset($_SESSION['login']) || $_SESSION['role'] !== 'admin') {
     echo "<script>alert('Akses Ditolak!'); window.location='login.php';</script>";
     exit;
