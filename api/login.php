@@ -25,10 +25,10 @@ if (isset($_POST['login'])) {
            
             if ($_SESSION['role'] == 'admin') {
                
-                header("Location: ../admin.dashboard.php"); 
+                header("Location: admin.dashboard.php"); 
             } else {
                 // User sekarang diarahkan langsung ke home.php
-            header("Location: ../home.php"); 
+            header("Location: home.php"); 
              } 
           exit();
         }
