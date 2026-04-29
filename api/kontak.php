@@ -1,18 +1,23 @@
 <?php
-
+session_start();
 
 $notifikasi = "";
 
+/* ambil data dari cookie */
 $nama_cookie  = $_COOKIE['nama'] ?? '';
 $email_cookie = $_COOKIE['email'] ?? '';
 
+/* cek status login */
+$login = isset($_SESSION['login']);
+
+/* ambil nama user */
+$nama = $_SESSION['nama'] ?? $nama_cookie ?? 'Pengguna';
 
 if (isset($_POST['kirim_pesan'])) {
     $nama  = htmlspecialchars($_POST['nama']);
     $email = htmlspecialchars($_POST['email']);
     $pesan = htmlspecialchars($_POST['pesan']);
 
-   
     $notifikasi = "
     <div class='alert alert-success alert-dismissible fade show shadow-sm mb-4' role='alert'>
         <i class='fa-solid fa-circle-check me-2'></i>
@@ -110,19 +115,18 @@ if (isset($_POST['kirim_pesan'])) {
                 <h4 class="fw-bold mb-4">Kirim Pesan</h4>
                 <form method="POST" action="">
                     <div class="mb-3">
-                        <label class="form-label text-muted">Nama Lengkap</label>
-                        <input type="text" name="nama" class="form-control"
-       value="<?= htmlspecialchars($nama_cookie); ?>"
-       <?= $nama_cookie ? 'readonly' : ''; ?>>
+    <label class="form-label text-muted">Nama Lengkap</label>
+    <input type="text" name="nama" class="form-control"
+           value="<?= htmlspecialchars($nama); ?>"
+           <?= $login ? 'readonly' : ''; ?> required>
+</div>
 
-<input type="email" name="email" class="form-control"
-       value="<?= htmlspecialchars($email_cookie); ?>"
-       <?= $email_cookie ? 'readonly' : ''; ?>>
-       
-                    <div class="mb-3">
-                        <label class="form-label text-muted">Email</label>
-                        <input type="email" name="email" class="form-control" placeholder="nama@email.com" required>
-                    </div>
+<div class="mb-3">
+    <label class="form-label text-muted">Email</label>
+    <input type="email" name="email" class="form-control"
+           value="<?= htmlspecialchars($_SESSION['email'] ?? $email_cookie); ?>"
+           <?= $login ? 'readonly' : ''; ?> required>
+</div>
                     <div class="mb-3">
                         <label class="form-label text-muted">Pesan</label>
                         <textarea name="pesan" class="form-control" rows="5" placeholder="Tulis pesan, kritik, atau saran di sini..." required></textarea>
