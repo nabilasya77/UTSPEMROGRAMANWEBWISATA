@@ -1,20 +1,25 @@
 <?php
-session_start();
 
 $notifikasi = "";
 
-/* Ambil data dari cookie jika ada */
+
 $nama_cookie  = $_COOKIE['nama'] ?? '';
 $email_cookie = $_COOKIE['email'] ?? '';
 
-/* Cek apakah user sudah login */
-$login = isset($_SESSION['login']);
+/* cek login berdasarkan cookie */
+$login = !empty($nama_cookie) && !empty($email_cookie);
 
-/* Ambil nama & email user */
-$nama  = $_SESSION['nama'] ?? $nama_cookie ?? '';
-$email = $_SESSION['email'] ?? $email_cookie ?? '';
+/* data user */
+$nama  = $nama_cookie;
+$email = $email_cookie;
 
-/* Proses kirim pesan */
+
+/*
+|--------------------------------------------------------------------------
+| Proses Kirim Pesan
+|--------------------------------------------------------------------------
+*/
+
 if (isset($_POST['kirim_pesan'])) {
     $nama  = htmlspecialchars($_POST['nama']);
     $email = htmlspecialchars($_POST['email']);
@@ -28,6 +33,7 @@ if (isset($_POST['kirim_pesan'])) {
     </div>";
 }
 ?>
+
 <!DOCTYPE html>
 <html lang="id">
 <head>
@@ -35,13 +41,16 @@ if (isset($_POST['kirim_pesan'])) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Kontak - Wisata Wonogiri</title>
 
+    <!-- Bootstrap -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
 
     <style>
         body {
             background-color: #f8f9fa;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Segoe UI', sans-serif;
             display: flex;
             flex-direction: column;
             min-height: 100vh;
@@ -57,6 +66,7 @@ if (isset($_POST['kirim_pesan'])) {
 <!-- NAVBAR -->
 <nav class="navbar navbar-expand-lg navbar-dark shadow-sm sticky-top" style="background-color: #112a46;">
     <div class="container">
+
         <a class="navbar-brand fw-bold" href="home.php">
             <i class="fa-solid fa-map-location-dot me-2"></i>
             Wisata Wonogiri
@@ -81,13 +91,17 @@ if (isset($_POST['kirim_pesan'])) {
                     <a class="nav-link active" href="kontak.php">Kontak</a>
                 </li>
 
+                <!-- LOGIN / USER -->
                 <?php if ($login): ?>
                     <li class="nav-item dropdown ms-lg-3">
+
                         <a class="btn btn-primary dropdown-toggle rounded-pill px-4"
                            href="#"
                            data-bs-toggle="dropdown">
+
                             <i class="fa-solid fa-circle-user me-2"></i>
-                            Halo, <?= htmlspecialchars($nama ?: 'Pengguna'); ?>
+                            Halo, <?= htmlspecialchars($nama); ?>
+
                         </a>
 
                         <ul class="dropdown-menu dropdown-menu-end">
@@ -96,19 +110,24 @@ if (isset($_POST['kirim_pesan'])) {
                                     Profil Saya
                                 </a>
                             </li>
+
                             <li>
                                 <a class="dropdown-item text-danger" href="logout.php">
                                     Logout
                                 </a>
                             </li>
                         </ul>
+
                     </li>
+
                 <?php else: ?>
+
                     <li class="nav-item">
                         <a class="btn btn-primary rounded-pill ms-lg-3 px-4" href="login.php">
                             Login
                         </a>
                     </li>
+
                 <?php endif; ?>
 
             </ul>
@@ -116,8 +135,10 @@ if (isset($_POST['kirim_pesan'])) {
     </div>
 </nav>
 
+
 <!-- CONTENT -->
 <div class="container my-5 flex-grow-1">
+
     <h2 class="text-center fw-bold mb-5" style="color: #112a46;">
         Hubungi Kami
     </h2>
@@ -129,7 +150,7 @@ if (isset($_POST['kirim_pesan'])) {
             <?= $notifikasi; ?>
         </div>
 
-        <!-- INFORMASI KONTAK -->
+        <!-- INFO KONTAK -->
         <div class="col-md-5 mb-4 mb-md-0 pe-md-5">
 
             <h4 class="fw-bold mb-4">Informasi Kontak</h4>
@@ -140,6 +161,7 @@ if (isset($_POST['kirim_pesan'])) {
             </p>
 
             <ul class="list-unstyled">
+
                 <li class="mb-3 d-flex align-items-center">
                     <i class="fa-solid fa-location-dot fs-5 text-primary me-3"></i>
                     <span class="text-muted">
@@ -160,6 +182,7 @@ if (isset($_POST['kirim_pesan'])) {
                         info@wisatawonogiri.com
                     </span>
                 </li>
+
             </ul>
 
             <h5 class="fw-bold mt-5 mb-3">Ikuti Kami</h5>
@@ -177,15 +200,20 @@ if (isset($_POST['kirim_pesan'])) {
                     <i class="fa-brands fa-youtube"></i>
                 </a>
             </div>
+
         </div>
 
-        <!-- FORM KONTAK -->
+
+        <!-- FORM -->
         <div class="col-md-7 ps-md-5 mt-4 mt-md-0">
 
-            <h4 class="fw-bold mb-4">Kirim Pesan</h4>
+            <h4 class="fw-bold mb-4">
+                Kirim Pesan
+            </h4>
 
             <form method="POST" action="">
 
+                <!-- Nama -->
                 <div class="mb-3">
                     <label class="form-label text-muted">
                         Nama Lengkap
@@ -201,6 +229,7 @@ if (isset($_POST['kirim_pesan'])) {
                     >
                 </div>
 
+                <!-- Email -->
                 <div class="mb-3">
                     <label class="form-label text-muted">
                         Email
@@ -216,6 +245,7 @@ if (isset($_POST['kirim_pesan'])) {
                     >
                 </div>
 
+                <!-- Pesan -->
                 <div class="mb-3">
                     <label class="form-label text-muted">
                         Pesan
@@ -230,11 +260,14 @@ if (isset($_POST['kirim_pesan'])) {
                     ></textarea>
                 </div>
 
+                <!-- Button -->
                 <button
                     type="submit"
                     name="kirim_pesan"
                     class="btn btn-primary px-5">
+
                     Kirim Pesan
+
                 </button>
 
             </form>
@@ -242,12 +275,14 @@ if (isset($_POST['kirim_pesan'])) {
     </div>
 </div>
 
+
 <!-- FOOTER -->
 <footer class="text-white text-center py-4 mt-auto" style="background-color: #112a46;">
     <p class="mb-0">
         © <?= date('Y'); ?> Destinasi Wisata Wonogiri. All rights reserved.
     </p>
 </footer>
+
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 
