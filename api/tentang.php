@@ -33,7 +33,7 @@ $nama  = $_COOKIE['nama'] ?? null;
     <li class="nav-item dropdown ms-lg-3">
         <a class="btn btn-primary dropdown-toggle rounded-pill px-4" href="#" data-bs-toggle="dropdown">
             <i class="fa-solid fa-circle-user me-2"></i>
-            Halo, <?= htmlspecialchars($nama ?? 'Pengguna'); ?>
+             <?= htmlspecialchars($nama ?? 'Pengguna'); ?>
         </a>
         <ul class="dropdown-menu dropdown-menu-end">
             <li><a class="dropdown-item" href="profil.php">Profil Saya</a></li>

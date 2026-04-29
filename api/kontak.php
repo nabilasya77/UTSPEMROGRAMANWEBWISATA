@@ -100,7 +100,7 @@ if (isset($_POST['kirim_pesan'])) {
                            data-bs-toggle="dropdown">
 
                             <i class="fa-solid fa-circle-user me-2"></i>
-                            Halo, <?= htmlspecialchars($nama); ?>
+                               <?= htmlspecialchars($nama); ?>
 
                         </a>
 
